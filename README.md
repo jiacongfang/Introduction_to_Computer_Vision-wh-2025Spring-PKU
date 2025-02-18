@@ -1,9 +1,16 @@
 # Introduction to Computer Vision Repository
+**Under Built**
 
 - Course: Introduction to Computer Vision
 - Lecturer: He Wang
-- Year: 2024 Spring
+- Year: 2025 Spring
 - Department: School of EECS, PKU
+
+The repo is forked from [2024Spring Version](https://github.com/EmptyBlueBox/Introduction_to_Computer_Vision-wh-2024Spring-PKU). 
+Labs and notes will be updated to 2025 Spring.
+
+--- 
+The original description shows below:
 
 Welcome to my [Course Review page](https://www.lyt0112.com/blog/course_review-zh)
 
