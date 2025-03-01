@@ -1,7 +1,7 @@
 # Byte-compiled / optimized / DLL files
 **/.DS_Store
 **/.vscode
-
+**/.idea
 cifar-10-batches-py
 experiments
 datasets
