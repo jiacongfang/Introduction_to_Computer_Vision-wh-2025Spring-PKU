@@ -74,18 +74,32 @@ Precision 和 Recall 都代表着你检测出的真正边缘所占比例,但是 
 
 \begin{figure}[htbp]
     \centering
-	\includegraphics[scale=0.2]{figures/NMS.png}
-	\caption{NMS示意图}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.6\textwidth]{figures/NMS.png}
+        \caption{NMS示意图}
+    \end{minipage}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.75\textwidth]{figures/bilinear.png}
+        \caption{双线性插值}
+    \end{minipage}
 \end{figure}
+
+% \begin{figure}[htbp]
+%     \centering
+% 	\includegraphics[scale=0.2]{figures/NMS.png}
+% 	\caption{NMS示意图}
+% \end{figure}
 
 对于一个边缘像素的候选点,我们认为它是边缘当:它比它梯度方向的两个点 $q+\nabla q$ 和 $q-\nabla q$ 的梯度值大,
-也就是这个点的梯度大小是局部最大值的时候.
+也就是这个点的梯度大小是局部最大值的时候. 
 
-\begin{figure}[htbp]
-    \centering
-	\includegraphics[scale=0.4]{figures/bilinear.png}
-	\caption{双线性插值}
-\end{figure}
+% \begin{figure}[htbp]
+%     \centering
+% 	\includegraphics[scale=0.4]{figures/bilinear.png}
+% 	\caption{双线性插值}
+% \end{figure}
 
 计算这个点梯度方向的点的梯度值可以使用双线性插值法,就是把这个点周围的四个点的梯度按照横纵距离反比加权.
 
