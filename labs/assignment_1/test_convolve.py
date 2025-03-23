@@ -34,6 +34,9 @@ class TestConvolve(unittest.TestCase):
         np.testing.assert_array_almost_equal(output, expected_output)
 
     def test_convolve(self):
+        """
+        Image wide and high may not be the same.
+        """
         img = np.random.rand(8, 6)
         padding_img = padding(img, 1, "zeroPadding")
         kernel = np.random.rand(3, 3)
