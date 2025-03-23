@@ -142,15 +142,13 @@ if __name__ == "__main__":
     magnitude_grad, direction_grad = compute_gradient_magnitude_direction(
         x_grad, y_grad
     )
-
-    write_img("result/HM1_magnitude_grad.png", magnitude_grad * 255)
+    # write_img("result/HM1_magnitude_grad.png", magnitude_grad * 255)
 
     # NMS
     NMS_output = non_maximal_suppressor(magnitude_grad, direction_grad)
-
-    write_img("result/HM1_NMS_result.png", NMS_output * 255)
+    # write_img("result/HM1_NMS_result.png", NMS_output * 255)
 
     # Edge linking with hysteresis
-    output_img = hysteresis_thresholding(NMS_output)
+    output_img = hysteresis_thresholding(NMS_output).astype(np.uint8)
 
     write_img("result/HM1_Canny_result.png", output_img * 255)
