@@ -47,8 +47,8 @@ if __name__ == "__main__":
 
     # you can adjust the parameters to fit your own implementation
     window_size = 5
-    alpha = 0.05
-    threshold = 25
+    alpha = 0.04
+    threshold = 21
 
     corner_list = corner_response_function(input_img, window_size, alpha, threshold)
 

@@ -1,11 +1,7 @@
 import unittest
 import numpy as np
-from scipy.signal import correlate2d
 from scipy.interpolate import RegularGridInterpolator
-from HM1_Convolve import Gaussian_filter, Sobel_filter_x, Sobel_filter_y
 from HM1_Canny import (
-    compute_gradient_magnitude_direction,
-    non_maximal_suppressor,
     bilinear_interpolation,
 )
 
