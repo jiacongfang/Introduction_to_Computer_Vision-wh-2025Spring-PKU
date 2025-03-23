@@ -2,9 +2,17 @@ import unittest
 import numpy as np
 from scipy.signal import correlate2d
 from HM1_Convolve import padding, convol_with_Toeplitz_matrix, convolve
+import logging
 
 
 class TestPadding(unittest.TestCase):
+    def setUp(self):
+        logging.basicConfig(
+            level=logging.INFO,
+            format="%(levelname)s - [%(message)s]",
+        )
+        logging.info(f"Running test: {self._testMethodName}")
+
     def test_zero_padding(self):
         img = np.array([[1, 2], [3, 4]])
         padding_size = 2
@@ -23,6 +31,13 @@ class TestPadding(unittest.TestCase):
 
 
 class TestConvolve(unittest.TestCase):
+    def setUp(self):
+        logging.basicConfig(
+            level=logging.INFO,
+            format="%(levelname)s - [%(message)s]",
+        )
+        logging.info(f"Running test: {self._testMethodName}")
+
     def test_convolve_toeplitz(self):
         """
         The size is fixed to 6*6 and 3*3.

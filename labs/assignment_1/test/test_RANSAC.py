@@ -6,11 +6,16 @@ import logging
 
 
 class TestRANSAC(unittest.TestCase):
-    def test_ransac(self):
-        logging.basicConfig(level=logging.INFO)
+    def setUp(self):
+        logging.basicConfig(
+            level=logging.INFO,
+            format="%(levelname)s - [%(message)s]",
+        )
+        logging.info(f"Running test: {self._testMethodName}")
 
-        noise_points_path = "./HM1_ransac_points.txt"
-        pred_plane_path = os.path.join("result", "HM1_RANSAC_plane.txt")
+    def test_ransac(self):
+        noise_points_path = os.path.join(".", "HM1_ransac_points.txt")
+        pred_plane_path = os.path.join(".", "result", "HM1_RANSAC_plane.txt")
 
         if not os.path.exists(noise_points_path):
             raise FileNotFoundError(f"File not found: {noise_points_path}")
