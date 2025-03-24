@@ -16,7 +16,8 @@ if __name__ == "__main__":
     # Calculate the minimal sample time first
     # the minimal time that can guarantee the probability of at least one hypothesis
     # does not contain any outliers is larger than 99.9%
-    p, w, n = 0.999, 10 / 13, 3
+    num_inliers = 100
+    p, w, n = 0.999, num_inliers / noise_points.shape[0], 3
     sample_time = np.ceil(np.log(1 - p) / np.log(1 - w**n)).astype(int)
     print("Minimal sample time: ", sample_time)
 

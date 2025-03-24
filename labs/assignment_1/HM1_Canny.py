@@ -134,9 +134,12 @@ if __name__ == "__main__":
 
     # Apply gaussian blurring
     blur_img = Gaussian_filter(input_img)
+    # write_img("result/HM1_Canny_blur_img.png", blur_img * 255)
 
     x_grad = Sobel_filter_x(blur_img)
     y_grad = Sobel_filter_y(blur_img)
+    # write_img("result/HM1_Canny_x_grad.png", x_grad * 255)
+    # write_img("result/HM1_Canny_y_grad.png", y_grad * 255)
 
     # Compute the magnitude and the direction of gradient
     magnitude_grad, direction_grad = compute_gradient_magnitude_direction(
