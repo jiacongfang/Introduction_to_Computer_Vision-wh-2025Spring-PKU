@@ -95,11 +95,12 @@ Then we have
 \begin{aligned}
 \theta&=\frac 12(\lambda_1\lambda_2-\alpha(\lambda_1+\lambda_2)^2)+\frac12(\lambda_1\lambda_2-2t)\\
 &=\lambda_1\lambda_2-\alpha(\lambda_1+\lambda_2)^2-t\\
-&=\det(R)-\alpha\text{Trace}(R)^2-t
+&=\det(R)-\alpha\text{Trace}(R)^2-t, \text{ where } \alpha\in[0.04,0.06], t\in[0.01,0.03].
 \end{aligned}
 \end{equation}
 
-其中 $\alpha\in[0.04,0.06], t\in[0.01,0.03]$.
+当 $\theta > \tau$ 时, 则认为这个点是角点. 其中 $\tau$ 通常是一个较小的正数.
+
 
 Harris Corner 对平移和图像旋转是 equivariant的,对尺度变换 (Scale) 不是 equivariant 的.
 
@@ -109,8 +110,8 @@ Harris Corner 对平移和图像旋转是 equivariant的,对尺度变换 (Scale)
         g_\sigma \ast I_x^2 & g_\sigma \ast I_xI_y \\ g_\sigma \ast I_xI_y & g_\sigma \ast I_y^2 
     \end{bmatrix}
 \]
-此时, (记 $g_\sigma \ast \cdot = g(\cdot)$)
-\begin{align*}
+此时, (记 $g_\sigma \ast \cdot = g(\cdot)$
+\begin{align*}j
     \theta(x_0, y_0) &= \det(M(x_0, y_0)) - \alpha \text{Trace}(M(x_0, y_0))^2 - t \\
     &= \left(g(I_x^2) g(I_y^2) - g(I_xI_y)^2\right) - \alpha \left(g(I_x^2) + g(I_y^2)\right)^2 - t.
 \end{align*}
@@ -122,10 +123,11 @@ Harris Corner 对平移和图像旋转是 equivariant的,对尺度变换 (Scale)
     \caption{Harris Corner Detection}
 \end{figure}
 \subsection{equivariant V.S. invariant}
-
-等变 (equivariant): $F(TX)=T(F(x))$,对于translation和rotation是等变的.
-
-不变 (invariant): $F(T(X))=F(X)$,也就是对于不同位置导出的角点还是那样,所以其实我们想要的是等变,也就是对于不同位置导出的角点做了同样的变化.
+考虑 $X \in V$, 函数$F: V \to V$ 和变换 $T: V \to V$ (translation, rotation, etc.)
+\begin{itemize}
+    \item 等变 (equivariant): $F(TX)=T(F(x))$,对于translation和rotation是等变的. 检查 $\theta$ 即可.
+    \item 不变 (invariant): $F(T(X))=F(X)$,也就是对于不同位置导出的角点还是那样,所以其实我们想要的是等变,也就是对于不同位置导出的角点做了同样的变化. 对于分类等输出较类别的问题,我们通常需要不变性.
+\end{itemize}
 
 \subsection{How to prove Harris detector is equivariant?}
 

@@ -1,0 +1,16 @@
+\section{Single Value Decomposition}
+在线性代数或高等代数课程中我们都接触过奇异值分解, 这一部分将重点关注
+SVD的几何意义, 主要参考了 \cite{SVD_ref_1}, \cite{SVD_ref_2} 以及 林晓疏学长信息科学中的数学的课程notes.
+
+\subsection{Introduction}
+对于实对称方阵 $\mathbf{M}_{n\times n}$, 我们有熟知的特征值分解:
+$\mathbf{M} = \mathbf{Q} \mathbf{\Lambda} \mathbf{Q}^{-1}$ 其中 $\mathbf{Q}$ 是正交矩阵, $\mathbf{\Lambda}$ 是对角矩阵. 
+而对于更一般的矩阵 $\mathbf{A}_{m\times n}$, 我们的目标是寻找矩阵 $\mathbf{U}_{m\times r} \Sigma_{r\times r} \mathbf{V}_{r\times n}$ 使得
+\[
+\mathbf{A} = \mathbf{U} \Sigma \mathbf{V}^T
+\]
+其中 $\mathbf{U}$ 和 $\mathbf{V}$ 是正交矩阵, $\Sigma$ 是对角矩阵且元素均为正实数. 
+
+\marginpar{\kaishu $\mathbf{U,\Sigma,V}$ 的维度有时会有所不同, 另一种常见的形式是 $\mathbf{U}_{m\times m}$, $\Sigma_{m\times n}$, $\mathbf{V}_{n\times n}$.}
+
+TODO Here.

@@ -1,4 +1,179 @@
-\include{package}
+% \include{package}
+\documentclass[a4,10pt,oneside,openany]{ctexart}
+\usepackage[utf8x]{inputenc}
+%\usepackage[UTF8]{ctex}
+%\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{mathpazo}
+\usepackage{mathrsfs}
+\setlength{\parskip}{0.2\baselineskip}
+%\setlength{\parskip}{0.2em}
+\usepackage{url}
+\usepackage{amssymb,amsmath,amsthm,amsfonts}
+\usepackage{mathtools}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{tikz}
+\tikzset{elegant/.style={smooth,thick,samples=50,cyan}}
+\tikzset{eaxis/.style={->,>=stealth}}
+
+
+\usepackage{extarrows}
+\usepackage{subfigure}
+\usepackage{graphics}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{subfigure}
+\usepackage{CJKulem}%中文删除线
+\usepackage[normalem]{ulem} % \sout{想加删除线的中文}
+\usepackage{picinpar}%图片绕排,是真滴烦
+\usepackage{float}
+
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+
+%页眉页脚
+\usepackage{authblk}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+%以下是书写伪代码用
+\usepackage{algorithm, algorithmicx}  
+\usepackage{algpseudocode}  
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm 
+
+\geometry{a4paper, left=3cm, right=3cm, bottom=3cm, top=3cm}%此行定义了纸张大小和边距,不需要可删除
+
+%以下是Inkspace
+\usepackage{import}
+\usepackage{xifthen}
+\usepackage{pdfpages}
+\usepackage{transparent}
+
+\usepackage{verbatim}%comment 环境
+%\usepackage[backref]{hyperref} %参考文献高亮跳转\\
+\usepackage[colorlinks, linkcolor=black, anchorcolor=blue, citecolor=red]{hyperref}
+
+\usepackage{chngcntr}
+\counterwithin{figure}{section}
+
+\newcommand{\incfig}[1]{%
+\def\svgwidth{\columnwidth}
+\import{./figures/}{#1.pdf_tex}
+}
+
+\newtheorem{deff}{定义}[section]
+\newtheorem{thm}{定理}[section]
+\newtheorem{clm}[thm]{命题}
+\newtheorem{lemma}[thm]{引理}
+\newtheorem{prf}{证明}[section]
+
+\renewcommand{\arraystretch}{1.5} % Adjust the value as needed
+
+\renewcommand{\proofname}{\indent Pr}
+\renewcommand{\qedsymbol}{$\blacksquare$}    % 证毕符号改成黑色的正方形
+
+\newcommand{\argmin}[1]{\underset{#1}{\arg \min}\ }
+\newcommand{\ceil}[1]{\left\lceil #1 \right \rceil }
+\newcommand{\norm}[1]{\left \Vert #1 \right \Vert}
+\newcommand{\tform}[1]{\left \Vert #1 \right \Vert_2}
+\newcommand{\tnorm}[1]{\left \Vert #1 \right \Vert_2}
+\newcommand{\onorm}[1]{\left \Vert #1 \right \Vert_1}
+\newcommand{\abs}[1]{\left|#1 \right|}
+\newcommand{\var}[1]{\text{Var}\left[ #1\right]}
+\newcommand{\xk}[1]{\left( #1\right)} 
+\newcommand{\zk}[1]{\left[ #1\right]} 
+\newcommand{\dk}[1]{\left\{ #1\right\}} 
+\newcommand{\bd}[1]{\bold{#1}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+
+%量子力学符号------
+\newcommand{\xde}{\text{Schrödinger}}
+\newcommand{\avg}[1]{\left \langle #1 \right \rangle}
+\newcommand{\lvec}[1]{\left \langle #1 \right |}
+\newcommand{\rvec}[1]{\left | #1 \right \rangle}
+
+
+\newtheorem{lproof}{证明}[section]
+\newtheorem{tuilun}{推论}
+\newtheorem{eg}{例}[section]
+\newtheorem{solve}{解}[section]
+\newcommand\ii{\textup{i}}
+\newcommand\dd{\mathrm{d}}
+
+
+%自定义数学符号
+\newcommand{\diag}{\textup{diag}}
+\newcommand{\Frobenius}[1]{\left\Vert #1 \right\Vert}
+\newcommand{\fform}[1]{\left\Vert #1 \right\Vert_F}
+\newcommand{\parr}[2]{\frac{\partial #1}{\partial #2}}%一阶偏微分
+\newcommand{\parrr}[2]{\frac{\partial^2 #1}{\partial #2^2}}%二阶偏微分
+\newcommand{\lap}[1]{\parrr{#1}{x} + \parrr{#1}{y} = 0}%二元拉普拉斯方程
+\newcommand{\ddd}[2]{\frac{\textup{d} #1}{\textup{d} #2}}%微商
+\newcommand{\dddd}[2]{\frac{\textup{d}^2 #1}{\textup{d} #2^2}}%微商
+
+%二重以上环路积分,强迫症了属于是
+\def\ooint{{\bigcirc}\kern-11.5pt{\int}\kern-6.5pt{\int}}
+\def\oooint{{\bigcirc}\kern-12.3pt{\int}\kern-7pt{\int}\kern-7pt{\int}}
+
+
+\newcommand{\tu}{\textup}
+\newcommand{\bm}{\boldsymbol}
+\newcommand{\ol}[1]{$\overline{#1}$}
+\newcommand{\re}[1]{\textup{Re}(#1)}
+\newcommand{\im}[1]{\textup{Im}(#1)}
+\newcommand{\fa}{\forall}
+\newcommand{\ex}{\exists}
+\newcommand{\st}{\textup{  s.t. }}
+\newcommand{\ve}{\varepsilon}
+\newcommand{\disp}{\displaystyle}
+\newcommand{\chj}{\textup{Cauchy}积分公式}
+\newcommand{\res}[1]{\textup{Res}\left(#1\right)}
+\newcommand{\mysum}[1][n]{\sum_{i = 1}^{#1}}%求和
+\newcommand{\series}[1]{\sum_{n = 0}^{\infty} #1_{n}}%级数
+\newcommand{\seriesa}[1]{\sum_{n = 0}^{\infty} \left| #1_{n}\right|}%绝对级数
+\newcommand{\fseries}[1]{\sum_{k = 1}^{\infty} #1_k (z)}
+
+\newcommand*{\num}{pi}
+
+%书写横线
+\newcommand{\horrule}[1]{\rule[0.5ex]{\linewidth}{#1}} 	% Horizontal rule
+
+\RequirePackage{algorithm}
+
+\makeatletter
+\newenvironment{algo}
+  {% \begin{breakablealgorithm}
+    \begin{center}
+      \refstepcounter{algorithm}% New algorithm
+      \hrule height.8pt depth0pt \kern2pt% \@fs@pre for \@fs@ruled
+      \parskip 0pt
+      \renewcommand{\caption}[2][\relax]{% Make a new \caption
+        {\raggedright\textbf{\fname@algorithm~\thealgorithm} ##2\par}%
+        \ifx\relax##1\relax % #1 is \relax
+          \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##2}%
+        \else % #1 is not \relax
+          \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##1}%
+        \fi
+        \kern2pt\hrule\kern2pt
+     }
+  }
+  {% \end{breakablealgorithm}
+     \kern2pt\hrule\relax% \@fs@post for \@fs@ruled
+   \end{center}
+  }
+\makeatother
+
+\renewcommand{\arraystretch}{0.85}
+
+%%%%%%%%%%%% Above is the preamble %%%%%%%%%%%
+
 
 % 文档标题
 \title{
@@ -36,33 +211,33 @@ Introduction to Computer Vision, Spring 2025 \\[25pt]}}
 	\include{01.edge_detection}
 	\include{02.line_fitting}
 	\include{03.keypoint_detection}
-	% \include{04.CNN}
-	% \include{05.CNN_training}
-	% \include{06.CNN_improvement}
-	% \include{07.classification}
-	% \include{08.CNN_for_classification}
-	% \include{09.segmentation}
-	% \include{10.3Dvision}
-	% \include{11.camera_carlibration}
-	% \include{12.single_view_geometry}
-	% \include{13.epipolar_geometry}
-	% \include{14.3D_data}
-	% \include{15.3D_deep_learning}
-	% \include{16.Sequential_Modeling}
-	% \include{17.video_analysis}
-	% \include{18.Transformer}
-	% \include{19.object_detection_and_instance_segmentation}
-	% \include{20.generative_model}
-	% \include{21.pose_and_motion}
-	% \include{22.Instance_Level_6D_Object_Pose_Estimation}
-	% \include{23.motion}
-	% \include{24.Embodied_AI}
-	% \include{25.Summary_of_Computer_Vision}
-
+	\include{04.CNN}
+	\include{05.CNN_training}
+	\include{06.CNN_improvement}
+	\include{07.classification}
+	\include{08.CNN_for_classification}
+	\include{09.segmentation}
+	\include{10.3Dvision}
+	\include{11.camera_carlibration}
+	\include{12.single_view_geometry}
+	\include{13.epipolar_geometry}
+	\include{14.3D_data}
+	\include{15.3D_deep_learning}
+	\include{16.Sequential_Modeling}
+	\include{17.video_analysis}
+	\include{18.Transformer}
+	\include{19.object_detection_and_instance_segmentation}
+	\include{20.generative_model}
+	\include{21.pose_and_motion}
+	\include{22.Instance_Level_6D_Object_Pose_Estimation}
+	\include{23.motion}
+	\include{24.Embodied_AI}
+	\include{25.Summary_of_Computer_Vision}
 
 	\clearpage
 	% appendix: appendix-QRDecomposition, condition-number, transformation-in-space
 	\appendix
+	\include{appendix-SVD}
 	\include{condition-number}
 	\include{transformation-in-space}
 	\include{DOF_and_rank}	
