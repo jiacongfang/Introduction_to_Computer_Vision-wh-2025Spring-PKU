@@ -9,11 +9,23 @@ import argparse
 from torch.utils.tensorboard  import SummaryWriter
 
 
-def MyCELoss(pred, gt):
+def MyCELoss(pred, gt, eps=1e-10):
+    """
+    Cross entropy loss function.
+    Args:
+        pred: prediction, shape (batch_size, num_classes)
+        gt: ground truth, shape (batch_size)
+    """
     # ----------TODO------------
     # Implement CE loss here
     # ----------TODO------------
-    return loss 
+    pred = torch.softmax(pred, dim=1)
+    gt = torch.nn.functional.one_hot(gt, num_classes=pred.shape[1])
+
+    return torch.mean(-torch.sum(gt * torch.log(pred + eps), dim=1))
+
+def standard_cross_entropy_loss(pred, gt):
+    return torch.nn.CrossEntropyLoss()(pred, gt)    
 
 
 def validate(epoch, model, val_loader, writer):
@@ -34,6 +46,8 @@ def validate(epoch, model, val_loader, writer):
 
     # ----------TODO------------
     # draw accuracy curve!
+    writer.add_scalar('val/acc1', top1.avg, epoch)
+    writer.add_scalar('val/acc5', top5.avg, epoch)
     # ----------TODO------------
 
     print(' Val Acc@1 {top1.avg:.3f}'.format(top1=top1))
@@ -57,6 +71,9 @@ def train(epoch, model, optimizer, criterion, train_loader, writer):
         optimizer.zero_grad()
 
         output = model(imgs)
+        
+        # import ipdb; ipdb.set_trace()
+
         loss = criterion(output, labels)
 
         # update metric
@@ -70,9 +87,11 @@ def train(epoch, model, optimizer, criterion, train_loader, writer):
 
         iteration += 1
         if iteration % 50 == 0:
-            pass 
             # ----------TODO------------
             # draw loss curve and accuracy curve!
+            writer.add_scalar('train/loss', losses.avg, iteration)
+            writer.add_scalar('train/acc1', top1.avg, iteration)
+            writer.add_scalar('train/acc5', top5.avg, iteration)
             # ----------TODO------------
 
     print(' Epoch: %d'%(epoch))

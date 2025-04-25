@@ -3,7 +3,7 @@ import os.path
 import numpy as np
 import pickle
 import torch 
-import torchvision.transforms as tfs
+from torchvision.transforms import v2
 from PIL import Image
 
 class CIFAR10(torch.utils.data.Dataset):
@@ -63,11 +63,19 @@ class CIFAR10(torch.utils.data.Dataset):
             tuple: (image, target) where target is index of the target class.
         """
         img, target = self.data[index], self.targets[index]
-        img = img.astype(np.float32)
-        img = img.transpose(2, 0, 1)
+        # img = img.astype(np.float32)
+        # img = img.transpose(2, 0, 1)
         
         # ------------TODO--------------
-        # data augmentation
+        img = Image.fromarray(img)
+        transform = v2.Compose([
+            v2.RandomHorizontalFlip(p=0.5),
+            v2.RandomVerticalFlip(p=0.5),
+            v2.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
+            v2.RandomGrayscale(p=0.2),
+            v2.ToTensor()   # convert PIL image to tensor
+        ])
+        img = transform(img)
         # ------------TODO--------------
 
         return img, target
@@ -98,14 +106,19 @@ if __name__ == '__main__':
     img.save('../results/Lenna.png')
 
     # --------------TODO------------------
-    # Copy the first kind of your augmentation code here
+    aug1_transform = v2.Compose([
+        v2.RandomHorizontalFlip(p=0.5)
+    ])
     # --------------TODO------------------
-    aug1 = img
+    aug1 = aug1_transform(img)
     aug1.save(f'../results/Lenna_aug1.png')
 
     # --------------TODO------------------
-    # Copy the second kind of your augmentation code here
+    aug2_transform = v2.Compose([
+        v2.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
+    ])
+
     # --------------TODO------------------
-    aug2 = img
+    aug2 = aug2_transform(img)
     aug2.save(f'../results/Lenna_aug2.png')
 

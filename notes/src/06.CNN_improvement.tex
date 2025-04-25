@@ -80,6 +80,48 @@ BN的基本思想其实相当直观：因为深层神经网络在做非线性变
 	\end{cases}
 \end{equation}
 
+对于BatchNorm的反向传播, 可以参考 \href{Deriving Batch-Norm Backprop Equations}{https://chrisyeh96.github.io/2017/08/28/deriving-batchnorm-backprop.html}. 
+考虑 $N$ 个样本的 $D$ 维输入, 记输入 $\mathbf{X} \in \mathbb{R}^{N \times D}$, 对于每一行 $x_i$, 进行归一化
+\begin{align*}
+	\hat{x}_i = \frac{x_i - \mu}{\sqrt{\sigma^2 + \epsilon}} 
+\end{align*}
+其中 $\mu, \sigma^2$ 分别是 $x_i$ 的均值和方差, $\epsilon$ 是一个很小的数, 用于避免除零错误.
+\begin{align}
+	\mu = \frac{1}{N} \sum_{i=1}^{N} x_i, \quad \sigma^2 = \frac{1}{N} \sum_{i=1}^{N} (x_i - \mu)^2
+\end{align}
+在这一层得到的输出为
+\begin{align}
+	y_i = \gamma \hat{x}_i + \beta, \text{ where } \gamma, \beta \in \mathbb{R}^{1\times D} \text{ are learnable scale parameters.}
+\end{align}
+为了后续简便, 整个 BatchNorm 可以表示为
+\begin{align}
+	\hat{X} = \frac{X - \mu}{\sqrt{\sigma^2 + \epsilon}}, \quad Y = \gamma \odot \hat{X} + \beta
+\end{align}
+其中 $\odot$ 表示 element-wise product.
+
+设 $\mathcal{L}$ 为 training loss, 给定 $\frac{\partial \mathcal{L}}{\partial Y} \in \mathbb{R}^{N\times D}$, 需要计算
+\begin{itemize}
+	\item $\frac{\partial \mathcal{L}}{\partial \gamma} \in \mathbb{R}^{1\times D}$.
+	\item $\frac{\partial \mathcal{L}}{\partial \beta} \in \mathbb{R}^{1\times D}$.
+	\item $\frac{\partial \mathcal{L}}{\partial X} \in \mathbb{R}^{N\times D}$.
+\end{itemize}
+前两者是简单的, 为
+\begin{align}
+	\boxed{\frac{\partial \mathcal{L}}{\partial \gamma} = \sum_{i=1}^{N} \frac{\partial \mathcal{L}}{\partial y_i} \odot \hat{x}_i}, \quad \boxed{\frac{\partial \mathcal{L}}{\partial \beta} = \sum_{i=1}^{N} \frac{\partial \mathcal{L}}{\partial y_i}}
+\end{align}
+对于 $\frac{\partial \mathcal{L}}{\partial X}$, 需要用到链式法则, 先计算 $\frac{\partial \mathcal{L}}{\partial \hat{X}}$:
+\begin{align}
+	\frac{\partial \mathcal{L}}{\partial \hat{x}_{ij}} = \frac{\partial \mathcal{L}}{\partial y_{ij}} \cdot \gamma_j \implies \frac{\partial \mathcal{L}}{\partial \hat{X}} = \gamma \odot \frac{\partial \mathcal{L}}{\partial Y}
+\end{align}
+然后我们来计算 $\frac{\partial \hat{X} }{\partial X}$:
+%% TODO here
+
+\begin{align}
+	\frac{\partial \mathcal{L}}{\partial X} = \frac{1}{N} \gamma \odot (\sigma^2 + \varepsilon)^{-1/2} \left[-\frac{\partial \mathcal{L}}{\partial \gamma} \odot \hat{X} + N \frac{\partial \mathcal{L}}{\partial Y} - \mathbf{1}_N \cdot \frac{\partial \mathcal{I}}{\partial \beta}\right]
+\end{align}
+
+
+
 BatchNorm通常位于FC层或Conv层之后,非线性层之前.它有如下的优点:
 
 \begin{enumerate}

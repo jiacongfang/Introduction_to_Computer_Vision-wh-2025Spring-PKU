@@ -10,7 +10,8 @@ def bn_forward_test(x, gamma, beta, mean, var):
     #----------------TODO------------------
     # Implement forward 
     #----------------TODO------------------
-
+    x = (x - mean) / np.sqrt(var + eps)
+    out = gamma * x + beta
     return out
 
 def bn_forward_train(x, gamma, beta):
@@ -18,6 +19,13 @@ def bn_forward_train(x, gamma, beta):
     #----------------TODO------------------
     # Implement forward 
     #----------------TODO------------------
+
+    sample_mean = np.mean(x, axis=0)
+    sample_var = np.var(x, axis=0)
+
+    x_hat = (x - sample_mean) / np.sqrt(sample_var + eps)
+
+    out = gamma * x_hat + beta
 
     # save intermidiate variables for computing the gradient when backward
     cache = (gamma, x, sample_mean, sample_var, x_hat)
@@ -28,6 +36,15 @@ def bn_backward(dout, cache):
     #----------------TODO------------------
     # Implement backward 
     #----------------TODO------------------
+    gamma, x, sample_mean, sample_var, x_hat = cache
+    N, _ = x.shape
+    dbeta = np.sum(dout, axis=0)
+    dgamma = np.sum(dout * x_hat, axis=0)
+
+    # refer to https://chrisyeh96.github.io/2017/08/28/deriving-batchnorm-backprop.html
+    sigma = np.sqrt(sample_var + eps)
+    # import ipdb; ipdb.set_trace()
+    dx = (1. / N) * gamma * (sigma ** -1) * (N * dout - np.ones((N,1)).dot(dbeta.reshape(1,16)) - x_hat * np.sum(dout * x_hat, axis=0))
 
     return dx, dgamma, dbeta
 
@@ -69,8 +86,11 @@ if __name__ == "__main__":
     # compute mean and var for testing
     # add codes anywhere as you need
     # ---------------- TODO -------------------
-    mean = 0.
-    var = 0.
+    mean = np.zeros(16)
+    var = np.zeros(16)
+
+    rho = 0.6   # used to update mean and var by moving average
+
 
     # training 
     for i in range(50):
@@ -80,6 +100,11 @@ if __name__ == "__main__":
         output_layer_1_act = 1 / (1+np.exp(-output_layer_1_bn))  #sigmoid activation function
         output_layer_2 = output_layer_1_act.dot(MLP_layer_2)
         pred_y = 1 / (1+np.exp(-output_layer_2))  #sigmoid activation function
+
+        # update mean and var by moving average
+        sample_mean, sample_var = cache[2], cache[3]
+        mean = rho * mean + (1-rho) * sample_mean
+        var = rho * var + (1-rho) * sample_var
 
         # compute loss 
         loss = -( gt_y * np.log(pred_y) + (1-gt_y) * np.log(1-pred_y)).sum()
