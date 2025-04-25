@@ -1,6 +1,7 @@
 \section{Convolutional Neural Network}
 
 \subsection{CNN and MaxPooling}
+\textbf{Convolve Kernel}: $F\times F \times C_{\text{in}} \times C_{\text{out}}$, $C_{\text{in}} = C$ 是输入的通道数, $C_{\text{out}} = K$是输出的通道数(filter的数量).
 
 假定输入是$W_1 \times H_1 \times C$的矩阵,可以看作一张图片的宽度,高度,通道数.卷积层需要四个超参数:
 filter的数量$K$和大小$F$,步长$S$和零填充参数$P$.经过卷积层后,原本的输入变成$W_2 \times H_2 \times K$,其中
@@ -13,9 +14,16 @@ filter的数量$K$和大小$F$,步长$S$和零填充参数$P$.经过卷积层后
 	\end{split}
 \end{equation}
 
-一共需要$F^2CK+K$个参数,其中额外的$K$是每层的bias.
+一共需要$F^2CK+K$个参数,其中额外的$K$是每层的bias. 
 
 选用卷积核,可以降低feature map的大小.如果直接将图片进行flatten,将会导致大量信息的丢失.
+
+关于 Bias 的选择, 考虑一个 $3\times 3$ 的 filter, 得到的特征为
+\[
+	\text{ReLU} \left[\left(\sum_{i=1}^{9} p_i w_i\right) + b\right]
+\]
+
+这里的偏置可以理解为 ReLU 的一个选择阈值. 而不对每个位置使用不同的偏置, 是因为这会导致每个位置的特征图都不同, 失去了平移不变性. 
 
 所谓池化操作,就是一种降采样,可以降低图片的大小.比如采用$2\times 2$的大小进行最大值池化,就是将每个$2\times 2$范围内最大的像素的值作为池化后这个像素的取值,
 将原来的图片缩减到四分之一大小.池化可以增大感受野.虽然可以通过步长大于一的卷积来代替池化,但是池化不需要参数,更容易优化.
@@ -30,6 +38,12 @@ filter的数量$K$和大小$F$,步长$S$和零填充参数$P$.经过卷积层后
 	\end{split}
 \end{equation}
 池化层无需参数.
+
+\begin{itemize}
+	\item \textbf{MaxPooling}: 取最大值, 提取最大特征
+	\item \textbf{AveragePooling}: 取平均值, 提取平均特征
+\end{itemize}
+但在实际应用中取决于我们需要全局特征(风格提取, AveragePooling)还是局部特征(物体分类, MaxPooling).
 
 \subsection{Summary of CNN-based classification networks}
 
@@ -80,13 +94,14 @@ $Mem=mnC$,显存变成二分之一
 
 左侧的矩阵被称为Toeplitz矩阵.由于深度学习当中的卷积参数是学习而来,故不需要像传统的卷积操作一样进行翻转.二维情形的卷积则是一个double block circulant matrix.
 
-由于我们选取较小的卷积核,所以前后层网络之间的连接更为稀疏.而且有更加明显的Parameter Sharing效应,即对每块区域采取相同的参数进行处理.
+由于我们选取较小的卷积核,所以前后层网络之间的连接更为稀疏(局部性).而且有更加明显的Parameter Sharing效应,即对每块区域采取相同的参数进行处理.
+\marginpar{\kaishu 稀疏连接一定好吗? Transformer的Attention机制挑战了这一点.}
 
 \textbf{FC和CNN两者哪个表达能力更强呢?}
 
 很显然是FC更强,因为FC的表达范围是CNN的超集.但事实上,使用Conv的结果远好于FC/MLP.那么问题出在哪里呢?
 
-一个显而易见的答案是,FC需要的参数量过于庞大了,一层可能需要上亿甚至更多的参数,这使得其非常难以被优化.另外一个非常重要的原因是,它并没有突出我们在视觉任务中目标的特点,即等变性 (equivariance).
+一个显而易见的答案是,FC需要的参数量过于庞大了,一层可能需要上亿甚至更多的参数,这使得其非常难以被优化(在参数空间中有大量的 local minimum).另外一个非常重要的原因是,它并没有突出我们在视觉任务中目标的特点,即等变性 (equivariance).
 
 我们知道,在目标分类等任务当中,将图片进行轻微平移,旋转,改变亮度等操作,并不会影响结果.但是,它们都改变了输入的几乎每一个值.
 而即使移动了一个像素,FC的输出都将天差地别.换言之,我们要求FC将在它看来输出完全不同的的图像归为一类,这样的矩阵是非常难以寻找的,会在优化过程中产生极大的困难.
