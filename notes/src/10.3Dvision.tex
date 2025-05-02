@@ -51,19 +51,20 @@ aperture size 实际上控制模糊程度和亮度.所以我们可以添加透�
 	\end{array}\right]
 \end{equation}
 
-如果考虑相机坐标的screw,如下图,则需要进行简单的变换:
+如果考虑相机坐标的skew,如下图,则需要进行简单的变换:
 \begin{equation}
 	\begin{cases}
-		x &= \alpha(\hat x - \cot \theta \hat y) + c_x
+		x &= \alpha(\hat x - \cot \theta \hat y) + c_x \cdot z
 		\\
-		y &= \beta \disp\frac{\hat{y}}{\sin \theta} + c_y
+		y &= \beta \disp\frac{\hat{y}}{\sin \theta} + c_y \codt z
 	\end{cases}
 \end{equation}
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[scale=0.65]{figures/image_plane.png}
-	\caption{成像过程坐标示意图}
+	\includegraphics[scale=0.25]{figures/image_plane.png}
+	\includegraphics[scale=0.35]{figures/parallelogram_rule.png}
+	\caption{成像过程坐标示意图与skew坐标推导示意图}
 \end{figure}
 
 最后得到
